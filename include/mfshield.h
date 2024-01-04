@@ -11,7 +11,11 @@ namespace MF_Shield
    const char DEVICE_NAME[] = "MultiFunctionShield";
    const int BAUD_RATE = 9600;
 
-   /** Multi-Function Shield Variables **/
+/******************************************************************************/
+/*                                                                            */
+/*                 MultiFunctionShield Variables                              */
+/*                                                                            */
+/******************************************************************************/
    const int ledD1 = 13; // LED1 connected to digital pin 13
    const int ledD2 = 12; // LED2 connected to digital pin 12
    const int ledD3 = 11; // LED3 connected to digital pin 11
@@ -23,7 +27,7 @@ namespace MF_Shield
 
    const int LM35 = A4; // LM35 connected to analog pin A4
 
-   const int potPinA0 = A0; // Potentiometer connected to analog pin A0
+   const int potA0 = A0; // Potentiometer connected to analog pin A0
 
    /** 7-Segment Display Variables **/
    const int latchPin = 4; // Latch connected to digital pin 4
@@ -40,15 +44,21 @@ namespace MF_Shield
    /** Buzzer Variables **/
    const int buzzerPin = 3; // Buzzer connected to digital pin 3
 
-   /* Free pins (PWM) **/
-   const int PWM5 = 5; // PWM pin 5
-   const int PWM6 = 6; // PWM pin 6
-   const int PWM9 = 9; // PWM pin 9
-   const int PWMA5 = A5; // PWM pin A5
+   /* Servos pins (PWM's) **/
+   const int Servo1 = 5; // Servo in 5
+   const int Servo2 = 6; // Servo in 6
+   const int Servo3 = 9; // Servo in 9
+   const int Servo4 = A5; // Servo in A5
 
-   /** Logic Variables **/
+   /** IR Receive Socket Declaration **/
+   const int IR_RECV_SOCKET = 2;
+
+/******************************************************************************/
+/*                                                                            */
+/*                               Logic Variables                              */
+/*                                                                            */
+/******************************************************************************/
    int SUM = 0;
-
 
    bool ledState;
    bool lastButtonState;
@@ -62,7 +72,11 @@ namespace MF_Shield
    unsigned long previouscycleTime = 0;
 
 
-   /** Functions **/
+/******************************************************************************/
+/*                                                                            */
+/*                         Function Declarations                              */
+/*                                                                            */
+/******************************************************************************/
    void whoIam()
    {
       // Display the microcontroller's information to the serial monitor
