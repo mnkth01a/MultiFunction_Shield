@@ -3,6 +3,13 @@
 
 #include <Arduino.h>
 
+#include <Wire.h>
+
+/******************************************************************************/
+/*                                                                            */
+/*                           Namespace MF_Shield                              */
+/*                                                                            */
+/******************************************************************************/
 namespace MF_Shield
 
 {
@@ -52,6 +59,7 @@ namespace MF_Shield
 
    /** IR Receive Socket Declaration **/
    const int IR_RECV_SOCKET = 2;
+   
 
 /******************************************************************************/
 /*                                                                            */
@@ -59,6 +67,9 @@ namespace MF_Shield
 /*                                                                            */
 /******************************************************************************/
    int SUM = 0;
+
+   int Flag_up = 1;
+   int Flag_up1 = 1;
 
    bool ledState;
    bool lastButtonState;

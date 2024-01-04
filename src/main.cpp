@@ -25,11 +25,12 @@ void setup()
   pinMode(swS2, INPUT);
   pinMode(swS3, INPUT);
 
-  /** Potentiometers **/
+  /** Lil Blue Potentiometer **/
   pinMode(potA0, INPUT);
 
   /** Buzzer **/
   pinMode(buzzerPin, OUTPUT);
+  digitalWrite(buzzerPin, HIGH);
 
   /** Display Pins - define pins 4, 7, 8 as OUTPUT **/
   pinMode(latchPin, OUTPUT);
