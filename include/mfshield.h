@@ -88,17 +88,9 @@ namespace MF_Shield
 /*                         Function Declarations                              */
 /*                                                                            */
 /******************************************************************************/
-   void whoIam()
-   {
-      // Display the microcontroller's information to the serial monitor
-      Serial.println("Device Name: " + String(DEVICE_NAME));
-      Serial.println("CPU: " + String(__AVR_ARCH__));
-      Serial.println("Clock Speed: " + String(F_CPU));
-      Serial.println("ARDUINO: " + String(ARDUINO));
-      Serial.println("ARDUINO_AVR_UNO: " + String(ARDUINO_AVR_UNO));
-      Serial.println();
-      Serial.flush();
-   }
+   void MF_Shield::whoIam();
+   void MF_Shield::blink();
+   void MF_Shield::fade();
 
    bool button_debounce(boolean last)
    {
