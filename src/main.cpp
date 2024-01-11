@@ -4,13 +4,23 @@
 
 using namespace MF_Shield;
 
-MFShield mfshield;
+MFShield mfs;
 
 void setup()
 {
-  mfshield.begin();
+   /** Serial **/
+   Serial.begin(BAUD_RATE);
+   Serial.println("MF Shield Test");
+   Serial.flush();
+
+   /** Who is this? **/
+   //mfs.whoIam();
+
 }
 
 void loop()
 {
+   // mfs.blink();
+   // mfs.fade();
+   // mfs.tellProcessing();
 }

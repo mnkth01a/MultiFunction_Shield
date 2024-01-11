@@ -1,28 +1,11 @@
 
-#include <MultiFunction_Shield.h>
+#include "mfshield.h"
 
 using namespace MF_Shield;
 
-MFShield::MF_Shield()
+MFShield::MFShield()
 {
    // Constructor
-}
-
-MFShield::~MF_Shield()
-{
-   // Destructor
-}
-
-void MFShield::begin()
-{
-   /** Serial **/
-   Serial.begin(BAUD_RATE);
-   Serial.println("MF Shield Test");
-   Serial.flush();
-
-   /** Who is this? **/
-   whoIam();
-
    /** LEDs **/
    pinMode(ledD1, OUTPUT);
    pinMode(ledD2, OUTPUT);
@@ -45,6 +28,11 @@ void MFShield::begin()
    pinMode(latchPin, OUTPUT);
    pinMode(clockPin, OUTPUT);
    pinMode(dataPin, OUTPUT);
+}
+
+MFShield::~MFShield()
+{
+   // Destructor
 }
 
 void MFShield::whoIam()
