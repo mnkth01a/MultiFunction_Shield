@@ -3,7 +3,51 @@
 
 using namespace MF_Shield;
 
-void MF_Shield::whoIam()
+MFShield::MF_Shield()
+{
+   // Constructor
+}
+
+MFShield::~MF_Shield()
+{
+   // Destructor
+}
+
+void MFShield::begin()
+{
+   /** Serial **/
+   Serial.begin(BAUD_RATE);
+   Serial.println("MF Shield Test");
+   Serial.flush();
+
+   /** Who is this? **/
+   whoIam();
+
+   /** LEDs **/
+   pinMode(ledD1, OUTPUT);
+   pinMode(ledD2, OUTPUT);
+   pinMode(ledD3, OUTPUT);
+   pinMode(ledD4, OUTPUT);
+
+   /** Button style Switches **/
+   pinMode(swS1, INPUT);
+   pinMode(swS2, INPUT);
+   pinMode(swS3, INPUT);
+
+   /** Lil Blue Potentiometer **/
+   pinMode(potA0, INPUT);
+
+   /** Buzzer **/
+   pinMode(buzzerPin, OUTPUT);
+   digitalWrite(buzzerPin, HIGH);
+
+   /** Display Pins - define pins 4, 7, 8 as OUTPUT **/
+   pinMode(latchPin, OUTPUT);
+   pinMode(clockPin, OUTPUT);
+   pinMode(dataPin, OUTPUT);
+}
+
+void MFShield::whoIam()
 {
    // Display the microcontroller's information to the serial monitor
    Serial.println("Device Name: " + String(DEVICE_NAME));
@@ -15,7 +59,7 @@ void MF_Shield::whoIam()
    Serial.flush();
 }
 
-void MF_Shield::blink()
+void MFShield::blink()
 {
    // check if it's time to blink the LED; that is, if the difference
    // between the current time and last time you blinked the LED is bigger than
@@ -32,7 +76,7 @@ void MF_Shield::blink()
    }
 }
 
-void MF_Shield::fade()
+void MFShield::fade()
 {
    // check to see if it's time to fade the LED; that is, if the difference
    // between the current time and last time you faded the LED is bigger than
@@ -49,7 +93,7 @@ void MF_Shield::fade()
    }
 }
 
-bool MF_Shield::button_debounce(boolean last)
+bool MFShield::button_debounce(boolean last)
 {
    boolean current = digitalRead(swS1);
    if (last != current)
@@ -60,7 +104,7 @@ bool MF_Shield::button_debounce(boolean last)
    return current;
 }
 
-void MF_Shield::tellProcessing()
+void MFShield::tellProcessing()
 {
    // check if button is pressed and if so, send a message to the serial monitor
    buttonState = button_debounce(lastButtonState);
