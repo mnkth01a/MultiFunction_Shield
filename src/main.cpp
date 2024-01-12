@@ -2,8 +2,6 @@
 
 #include "mfshield.h"
 
-MFShield mfs;
-
 void setup()
 {
    /** Serial **/
@@ -12,7 +10,7 @@ void setup()
    Serial.flush();
 
    /** Who is this? **/
-   mfs.whoIam();
+   mfshield.whoIam();
 }
 
 void loop()
