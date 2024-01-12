@@ -2,8 +2,6 @@
 
 #include "mfshield.h"
 
-using namespace MF_Shield;
-
 MFShield mfs;
 
 void setup()
@@ -15,12 +13,9 @@ void setup()
 
    /** Who is this? **/
    mfs.whoIam();
-
 }
 
 void loop()
 {
-   mfs.blink();
-   // mfs.fade();
-   // mfs.tellProcessing();
+
 }
