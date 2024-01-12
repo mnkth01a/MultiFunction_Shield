@@ -12,16 +12,15 @@
 namespace MF_Shield
 {
    /** Constants **/
-   const char DEVICE_NAME[32] = "MultiFunctionShield";
+   const char DEVICE_NAME[] = "MultiFunctionShield";
    const int DEVICE_ID = 0x0a; // Change this to the ID of this device
    const int BAUD_RATE = 9600;
 
-   unsigned char Dis_table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
-                                  0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
-
-   unsigned char Dis_buf[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
-
-   unsigned char disbuf[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
+   /** LED Variables **/
+   const int ledD1 = 13; // LED D1 connected to digital pin 13
+   const int ledD2 = 12; // LED D2 connected to digital pin 12
+   const int ledD3 = 11; // LED D3 connected to digital pin 11
+   const int ledD4 = 10; // LED D4 connected to digital pin 10
 
    /** Switches, Sensors and Potentiometer Variables **/
    const int swS1 = A1; // Switch A1 connected to analog pin A1
@@ -60,15 +59,13 @@ namespace MF_Shield
    int Flag_up1 = 1;
 
    bool ledState;
-   bool lastButtonState;
-   bool buttonState;
 
    byte cycleCount = 0;
 
    unsigned long currentTime = 0;
-   unsigned long previousblinkTime = 0;
-   unsigned long previousfadeTime = 0;
    unsigned long previouscycleTime = 0;
+
+   unsigned long cycleInterval = 1000;
 
    class MFShield
    {
@@ -99,13 +96,84 @@ namespace MF_Shield
       /*            Common Function Declarations                              */
       /*                                                                      */
       /************************************************************************/
-      void whoIam();
-      void blink();
-      void fade();
-      bool button_debounce(boolean last);
-      void tellProcessing();
-   }; // class MFShield
+      void whoIam()
+      {
+         // Display the microcontroller's information to the serial monitor
+         Serial.println("Device Name: " + String(DEVICE_NAME));
+         Serial.println("CPU: " + String(__AVR_ARCH__));
+         Serial.println("Clock Speed: " + String(F_CPU));
+         Serial.println("ARDUINO: " + String(ARDUINO));
+         Serial.println("ARDUINO_AVR_UNO: " + String(ARDUINO_AVR_UNO));
+         Serial.println();
+         Serial.flush();
+      };
 
+      unsigned long blinkInterval = 1000;
+      unsigned long previousblinkTime = 0;
+
+      void blink()
+      {
+         // check if it's time to blink the LED; that is, if the difference
+         // between the current time and last time you blinked the LED is bigger than
+         // the interval at which you want to blink the LED.
+         currentTime = millis();
+         if (currentTime - previousblinkTime >= blinkInterval)
+         {
+            // save the last time you blinked the LED
+            previousblinkTime = currentTime;
+
+            // if the LED is off turn it on and vice-versa:
+            ledState = !ledState;
+            digitalWrite(ledD1, ledState);
+         }
+      };
+
+      unsigned long fadeInterval = 30;
+      unsigned long previousfadeTime = 0;
+
+      void fade()
+      {
+         // check to see if it's time to fade the LED; that is, if the difference
+         // between the current time and last time you faded the LED is bigger than
+         // the interval at which you want to fade the LED.
+         currentTime = millis();
+         if (currentTime - previousfadeTime >= fadeInterval)
+         {
+            // save the last time you blinked the LED
+            previousfadeTime = currentTime;
+
+            // if the LED is off turn it on and vice-versa:
+            ledState = !ledState;
+            digitalWrite(ledD2, ledState);
+         }
+      };
+
+      bool lastButtonState;
+      bool buttonState;
+
+      bool button_debounce(boolean last)
+      {
+         boolean current = digitalRead(swS1);
+         if (last != current)
+         {
+            delay(30);
+            current = digitalRead(swS1);
+         }
+         return current;
+      };
+
+      void tellProcessing()
+      {
+         // check if button is pressed and if so, send a message to the serial monitor
+         buttonState = button_debounce(lastButtonState);
+         if (buttonState)
+         {
+            Serial.println("Button Pressed");
+            Serial.flush();
+         }
+         lastButtonState = buttonState;
+      };
+   }; // class MFShield
 
    /************************************************************************/
    /*                                                                      */
@@ -137,7 +205,6 @@ namespace MF_Shield
       }
    }; // class Servo
 
-
    /************************************************************************/
    /*                                                                      */
    /*                   7-Segment Display Class Declaration                */
@@ -152,8 +219,15 @@ namespace MF_Shield
       int _digit;
       int _number;
 
+      unsigned char Dis_table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
+                                     0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
+
+      unsigned char Dis_buf[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
+
+      unsigned char disbuf[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
+
    public:
-      SevenSegmentDisplay(int latchPin, int clockPin, int dataPin, int digit=0)
+      SevenSegmentDisplay(int latchPin, int clockPin, int dataPin, int digit)
       {
          _latchPin = latchPin;
          _clockPin = clockPin;
@@ -164,7 +238,7 @@ namespace MF_Shield
          pinMode(_dataPin, OUTPUT);
       }
 
-      SevenSegmentDisplay(int digit=0)
+      SevenSegmentDisplay(int digit)
       {
          _digit = digit;
          pinMode(_latchPin, OUTPUT);
@@ -177,16 +251,34 @@ namespace MF_Shield
          // Destructor
       }
 
-      void write(int number)
+      void write(int digit, int number)
       {
+         _digit = digit;
+         if (_digit > 3)
+         {
+            _digit = 3;
+         }
+         else if (_digit < 0)
+         {
+            _digit = 0;
+         }
+
          _number = number;
+         if (_number > 9)
+         {
+            _number = 9;
+         }
+         else if (_number < 0)
+         {
+            _number = 0;
+         }
+
          digitalWrite(_latchPin, LOW);
          shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[_number]);
          shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buf[_digit]);
          digitalWrite(_latchPin, HIGH);
       }
    }; // class SevenSegmentDisplay
-
 
    /************************************************************************/
    /*                                                                      */
@@ -198,6 +290,7 @@ namespace MF_Shield
    private:
       int _pin;
       int _frequency;
+      unsigned long _duration;
 
    public:
       Buzzer(int pin)
@@ -211,20 +304,20 @@ namespace MF_Shield
          // Destructor
       }
 
-      void write(int frequency)
+      // frequency (in hertz) and duration (in milliseconds).
+      void buzz(int frequency, unsigned long duration)
       {
          _frequency = frequency;
-         tone(_pin, _frequency);
+         _duration = duration;
+         tone(_pin, _frequency, _duration);
       }
    }; // class Buzzer
-
 
    /************************************************************************/
    /*                                                                      */
    /*                      */
    /*                                                                      */
    /************************************************************************/
-
 
 } // namespace MF_Shield
 #endif // mfshield_h

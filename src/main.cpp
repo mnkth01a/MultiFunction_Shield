@@ -14,13 +14,13 @@ void setup()
    Serial.flush();
 
    /** Who is this? **/
-   //mfs.whoIam();
+   mfs.whoIam();
 
 }
 
 void loop()
 {
-   // mfs.blink();
+   mfs.blink();
    // mfs.fade();
    // mfs.tellProcessing();
 }
