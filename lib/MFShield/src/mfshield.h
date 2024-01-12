@@ -73,11 +73,6 @@ private:
    int _clockPin = clockPin;
    int _dataPin = dataPin;
 
-   int _Servo1 = Servo1;
-   int _Servo2 = Servo2;
-   int _Servo3 = Servo3;
-   int _Servo4 = Servo4;
-
    int _IR_RECV_SOCKET = IR_RECV_SOCKET;
 
 public:
@@ -93,7 +88,6 @@ public:
 }; // class MFShield
 
 extern MFShield mfshield;
-
 
 /************************************************************************/
 /*                                                                      */
@@ -125,12 +119,13 @@ public:
    }
 }; // class Servo
 
+
 /************************************************************************/
 /*                                                                      */
 /*                   7-Segment Display Class Declaration                */
 /*                                                                      */
 /************************************************************************/
-class SevenSegmentDisplay
+class SSD
 {
 private:
    int _latchPin = latchPin;
@@ -139,15 +134,15 @@ private:
    int _digit;
    int _number;
 
-   unsigned char Dis_table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
-                                  0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
+   unsigned char Dis_number[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
+                                   0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
 
-   unsigned char Dis_buf[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
+   unsigned char Dis_digit[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
 
-   unsigned char disbuf[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
+   unsigned char Dis_data[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
 
 public:
-   SevenSegmentDisplay(int latchPin, int clockPin, int dataPin, int digit)
+   SSD(int latchPin, int clockPin, int dataPin, int digit)
    {
       _latchPin = latchPin;
       _clockPin = clockPin;
@@ -158,7 +153,7 @@ public:
       pinMode(_dataPin, OUTPUT);
    }
 
-   SevenSegmentDisplay(int digit)
+   SSD(int digit)
    {
       _digit = digit;
       pinMode(_latchPin, OUTPUT);
@@ -166,11 +161,12 @@ public:
       pinMode(_dataPin, OUTPUT);
    }
 
-   ~SevenSegmentDisplay()
+   ~SSD()
    {
       // Destructor
    }
 
+   // digit (0-3) and number (0-9)
    void write(int digit, int number)
    {
       _digit = digit;
@@ -194,8 +190,8 @@ public:
       }
 
       digitalWrite(_latchPin, LOW);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[_number]);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buf[_digit]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_number[_number]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_digit[_digit]);
       digitalWrite(_latchPin, HIGH);
    }
 }; // class SevenSegmentDisplay
