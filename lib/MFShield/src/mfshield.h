@@ -77,7 +77,7 @@ private:
    int _Servo2 = Servo2;
    int _Servo3 = Servo3;
    int _Servo4 = Servo4;
-   
+
    int _IR_RECV_SOCKET = IR_RECV_SOCKET;
 
 public:
@@ -93,6 +93,7 @@ public:
 }; // class MFShield
 
 extern MFShield mfshield;
+
 
 /************************************************************************/
 /*                                                                      */

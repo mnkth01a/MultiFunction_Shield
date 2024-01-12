@@ -11,10 +11,6 @@
 #######################################
 
 whoIam	KEYWORD2
-blink	KEYWORD2
-fade	KEYWORD2
-button_debounce	KEYWORD2
-tellProcessing	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
