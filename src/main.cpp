@@ -49,8 +49,9 @@ void loop()
    Serial.println("Potentiometer Value = " + String(val));
    delay(300);
 
-   Serial.println("Buzzer Buzzing at " + String(val/17) + " Hz");
-   buzzer.buzz(int(val/17), 1000);
+   val /= 17;
+   Serial.println("Buzzer Buzzing at " + String(val) + " Hz");
+   buzzer.buzz(int(val), 500);
 
    // for (int k = 1; k < 256; k++)
    // {
