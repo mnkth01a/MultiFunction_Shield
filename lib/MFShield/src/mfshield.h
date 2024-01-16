@@ -143,7 +143,7 @@ private:
    int _value;
 
 public:
-   Potentiometer(int);
+   Potentiometer();
    ~Potentiometer();
 
    int read(void);

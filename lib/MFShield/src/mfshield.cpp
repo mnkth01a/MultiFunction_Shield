@@ -203,7 +203,7 @@ void SSD::write(int digit, int number)
 /*                  Potentiometer Class Definition                      */
 /*                                                                      */
 /************************************************************************/
-Potentiometer::Potentiometer(int)
+Potentiometer::Potentiometer()
 {
    _potPin = potA0;
    pinMode(_potPin, INPUT);

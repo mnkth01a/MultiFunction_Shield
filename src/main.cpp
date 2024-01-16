@@ -7,8 +7,10 @@
 MFShield mfshield;
 Buzzer buzzer;
 LED led;
+Potentiometer pot;
 
 int i = 0;
+int val = 0;
 
 void setup()
 {
@@ -43,7 +45,12 @@ void loop()
       delay(500);
    };
 
-   //buzzer.buzz(50, 1000);
+   val = pot.read();
+   Serial.println("Potentiometer Value = " + String(val));
+   delay(300);
+
+   Serial.println("Buzzer Buzzing at " + String(val/17) + " Hz");
+   buzzer.buzz(int(val/17), 1000);
 
    // for (int k = 1; k < 256; k++)
    // {
