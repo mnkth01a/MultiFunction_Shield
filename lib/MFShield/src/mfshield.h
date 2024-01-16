@@ -54,11 +54,6 @@ private:
    /*                                                                      */
    /************************************************************************/
    /** Constants **/
-   int _ledD1 = ledD1;
-   int _ledD2 = ledD2;
-   int _ledD3 = ledD3;
-   int _ledD4 = ledD4;
-
    int _swS1 = swS1;
    int _swS2 = swS2;
    int _swS3 = swS3;
@@ -66,12 +61,6 @@ private:
    int _LM35 = LM35;
 
    int _potA0 = potA0;
-
-   int _buzzerPin = buzzerPin;
-
-   int _latchPin = latchPin;
-   int _clockPin = clockPin;
-   int _dataPin = dataPin;
 
    int _IR_RECV_SOCKET = IR_RECV_SOCKET;
 
@@ -87,38 +76,29 @@ public:
    void whoIam(void);
 }; // class MFShield
 
-extern MFShield mfshield;
-
 /************************************************************************/
 /*                                                                      */
-/*                   Servo Class Declaration                            */
+/*                         LED Class Declaration                        */
 /*                                                                      */
 /************************************************************************/
-class Servo
+class LED
 {
 private:
-   int _pin;
-   int _angle;
+   int _led;
+   int _ledD1;
+   int _ledD2;
+   int _ledD3;
+   int _ledD4;
 
 public:
-   Servo(int pin)
-   {
-      _pin = pin;
-      pinMode(_pin, OUTPUT);
-   }
+   LED();
+   ~LED();
 
-   ~Servo()
-   {
-      // Destructor
-   }
-
-   void write(int angle)
-   {
-      _angle = angle;
-      analogWrite(_pin, _angle);
-   }
-}; // class Servo
-
+   void led_on(int);
+   void led_off(int);
+   void led_toggle(int);
+   void led_fade(int, int);
+}; // class LED
 
 /************************************************************************/
 /*                                                                      */
@@ -142,59 +122,32 @@ private:
    unsigned char Dis_data[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
 
 public:
-   SSD(int latchPin, int clockPin, int dataPin, int digit)
-   {
-      _latchPin = latchPin;
-      _clockPin = clockPin;
-      _dataPin = dataPin;
-      _digit = digit;
-      pinMode(_latchPin, OUTPUT);
-      pinMode(_clockPin, OUTPUT);
-      pinMode(_dataPin, OUTPUT);
-   }
-
-   SSD(int digit)
-   {
-      _digit = digit;
-      pinMode(_latchPin, OUTPUT);
-      pinMode(_clockPin, OUTPUT);
-      pinMode(_dataPin, OUTPUT);
-   }
-
-   ~SSD()
-   {
-      // Destructor
-   }
+   SSD();
+   ~SSD();
 
    // digit (0-3) and number (0-9)
-   void write(int digit, int number)
-   {
-      _digit = digit;
-      if (_digit > 3)
-      {
-         _digit = 3;
-      }
-      else if (_digit < 0)
-      {
-         _digit = 0;
-      }
-
-      _number = number;
-      if (_number > 9)
-      {
-         _number = 9;
-      }
-      else if (_number < 0)
-      {
-         _number = 0;
-      }
-
-      digitalWrite(_latchPin, LOW);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_number[_number]);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_digit[_digit]);
-      digitalWrite(_latchPin, HIGH);
-   }
+   void write(int, int);
 }; // class SevenSegmentDisplay
+
+extern SSD ssd;
+
+/************************************************************************/
+/*                                                                      */
+/*                      Potentiometer Class Declaration                 */
+/*                                                                      */
+/************************************************************************/
+class Potentiometer
+{
+private:
+   int _potPin;
+   int _value;
+
+public:
+   Potentiometer(int);
+   ~Potentiometer();
+
+   int read(void);
+}; // class Potentiometer
 
 /************************************************************************/
 /*                                                                      */
@@ -204,30 +157,37 @@ public:
 class Buzzer
 {
 private:
-   int _pin;
+   int _buzzerPin;
    int _frequency;
-   unsigned long _duration;
+   int _duration;
+   int _period;
+   int _buzzerFreq;
 
 public:
-   Buzzer(int pin)
-   {
-      _pin = pin;
-      pinMode(_pin, OUTPUT);
-   }
-
-   ~Buzzer()
-   {
-      // Destructor
-   }
+   Buzzer();
+   ~Buzzer();
 
    // frequency (in hertz) and duration (in milliseconds).
-   void buzz(int frequency, unsigned long duration)
-   {
-      _frequency = frequency;
-      _duration = duration;
-      tone(_pin, _frequency, _duration);
-   }
+   void buzz(int, int);
 }; // class Buzzer
+
+/************************************************************************/
+/*                                                                      */
+/*                   Servo Class Declaration                            */
+/*                                                                      */
+/************************************************************************/
+class Servo
+{
+private:
+   int _servoPin;
+   int _angle;
+
+public:
+   Servo(int);
+   ~Servo();
+
+   void write(int);
+}; // class Servo
 
 /************************************************************************/
 /*                                                                      */
