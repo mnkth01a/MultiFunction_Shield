@@ -45,15 +45,14 @@ Button::~Button(){
     // Destructor
 };
 
-int Button::read(int sw)
+int Button::read(int pin_addr) // pin_addr: swS1, swS2, swS3
 {
    int _state = 0;
-   int _sw = sw;
+   int _sw = pin_addr;
 
-   _state = digitalRead(_sw);
+   _state = digitalRead(_sw);  // _state is the state of the switch at pin_addr.
 
-   // I had to invert the logic for the switches to work intuitively.
-   return !_state;
+   return !_state;  // I had to invert the logic for the switches to work intuitively.
 };
 
 /************************************************************************/

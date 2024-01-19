@@ -88,6 +88,7 @@ public:
    Button();
    ~Button();
 
+   // @param pin_addr: swS1, swS2, swS3
    int read(int);
 }; // class Button
 
