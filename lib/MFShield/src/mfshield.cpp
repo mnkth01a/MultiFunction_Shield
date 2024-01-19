@@ -6,16 +6,8 @@
 /*                      MFShield Class Definition                       */
 /*                                                                      */
 /************************************************************************/
-MFShield::MFShield()
-{
-   // Constructor
-   /** Button style Switches **/
-   pinMode(_swS1, INPUT);
-   pinMode(_swS2, INPUT);
-   pinMode(_swS3, INPUT);
-
-   /** Lil Blue Potentiometer **/
-   pinMode(_potA0, INPUT);
+MFShield::MFShield(){
+    // Constructor
 };
 
 MFShield::~MFShield(){
@@ -32,6 +24,36 @@ void MFShield::whoIam(void)
    Serial.println("ARDUINO_AVR_UNO: " + String(ARDUINO_AVR_UNO));
    Serial.println();
    Serial.flush();
+};
+
+/************************************************************************/
+/*                                                                      */
+/*                       Button Class Definition                        */
+/*                                                                      */
+/************************************************************************/
+Button::Button()
+{
+   // Constructor
+
+   /** Button style Switches **/
+   pinMode(_swS1, INPUT);
+   pinMode(_swS2, INPUT);
+   pinMode(_swS3, INPUT);
+};
+
+Button::~Button(){
+    // Destructor
+};
+
+int Button::read(int sw)
+{
+   int _state = 0;
+   int _sw = sw;
+
+   _state = digitalRead(_sw);
+
+   // I had to invert the logic for the switches to work intuitively.
+   return !_state;
 };
 
 /************************************************************************/
@@ -102,7 +124,7 @@ void LED::led_off(int led)
    }
 };
 
-// You have to toggle the pins to toggle the LEDs
+// You have to toggle the pins to toggle the LEDs (Duh!)
 void LED::led_toggle(int ledDx)
 {
    _led = ledDx;
@@ -170,32 +192,17 @@ SSD::~SSD(){
 };
 
 // digit (0-3) and number (0-9)
-void SSD::write(int digit, int number)
+void SSD::display()
 {
-   _digit = digit;
-   if (_digit > 3)
+   // Send value to the four displays
+   for (i = 0; i < 4; i++)
    {
-      _digit = 3;
+      digitalWrite(_latchPin, LOW);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[Dis_data[i]]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buffer[i]);
+      digitalWrite(_latchPin, HIGH);
+      delay(2);
    }
-   else if (_digit < 0)
-   {
-      _digit = 0;
-   }
-
-   _number = number;
-   if (_number > 9)
-   {
-      _number = 9;
-   }
-   else if (_number < 0)
-   {
-      _number = 0;
-   }
-
-   digitalWrite(_latchPin, LOW);
-   shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_number[_number]);
-   shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_digit[_digit]);
-   digitalWrite(_latchPin, HIGH);
 };
 
 /************************************************************************/
@@ -236,7 +243,7 @@ Buzzer::~Buzzer(){
 };
 
 // frequency (in hertz) and duration (in milliseconds).
-void Buzzer::buzz(int frequency, int duration)
+void Buzzer::buzz_on(int frequency, int duration)
 {
    //
    _frequency = frequency;

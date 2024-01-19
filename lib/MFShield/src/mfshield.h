@@ -19,7 +19,7 @@ const int swS1 = A1; // Switch A1 connected to analog pin A1
 const int swS2 = A2; // Switch A2 connected to analog pin A2
 const int swS3 = A3; // Switch A3 connected to analog pin A3
 
-const int LM35 = A4; // LM35 connected to analog pin A4
+const int LM35 = A4; // LM35/DS1820 temp sensor module connected to analog pin A4
 
 const int potA0 = A0; // Potentiometer connected to analog pin A0
 
@@ -54,10 +54,6 @@ private:
    /*                                                                      */
    /************************************************************************/
    /** Constants **/
-   int _swS1 = swS1;
-   int _swS2 = swS2;
-   int _swS3 = swS3;
-
    int _LM35 = LM35;
 
    int _potA0 = potA0;
@@ -75,6 +71,25 @@ public:
 
    void whoIam(void);
 }; // class MFShield
+
+/************************************************************************/
+/*                                                                      */
+/*                      Button Class Declaration                        */
+/*                                                                      */
+/************************************************************************/
+class Button
+{
+private:
+   int _swS1 = swS1;
+   int _swS2 = swS2;
+   int _swS3 = swS3;
+
+public:
+   Button();
+   ~Button();
+
+   int read(int);
+}; // class Button
 
 /************************************************************************/
 /*                                                                      */
@@ -111,13 +126,15 @@ private:
    int _latchPin = latchPin;
    int _clockPin = clockPin;
    int _dataPin = dataPin;
-   int _digit;
-   int _number;
+   int i, j, k, l;
+   int SUM = 0;
+   int Flag_up = 1;
+   int Flag_up1 = 1;
 
-   unsigned char Dis_number[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
-                                   0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
+   unsigned char Dis_table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
+                                  0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
 
-   unsigned char Dis_digit[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
+   unsigned char Dis_buffer[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
 
    unsigned char Dis_data[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
 
@@ -126,7 +143,7 @@ public:
    ~SSD();
 
    // digit (0-3) and number (0-9)
-   void write(int, int);
+   void display();
 }; // class SevenSegmentDisplay
 
 extern SSD ssd;
@@ -168,7 +185,7 @@ public:
    ~Buzzer();
 
    // frequency (in hertz) and duration (in milliseconds).
-   void buzz(int, int);
+   void buzz_on(int, int);
 }; // class Buzzer
 
 /************************************************************************/

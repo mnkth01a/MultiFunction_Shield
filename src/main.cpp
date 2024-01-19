@@ -8,6 +8,10 @@ MFShield mfshield;
 Buzzer buzzer;
 LED led;
 Potentiometer pot;
+SSD ssd;
+Button button1;
+Button button2;
+Button button3;
 
 int i = 0;
 int val = 0;
@@ -22,7 +26,7 @@ void setup()
    /** Who is this? **/
    mfshield.whoIam();
 
-   buzzer.buzz(5, 1000);
+   buzzer.buzz_on(5, 1000);
 
    /** LEDs **/
    led.led_off(1);
@@ -33,25 +37,38 @@ void setup()
 
 void loop()
 {
-   for (int i = 1; i < 5; i++)
+   for (int i = 2; i < 5; i++)
    {
       led.led_toggle(i);
       delay(500);
    };
 
-   for (int j = 4; j > 0; j--)
+   for (int j = 4; j > 1; j--)
    {
       led.led_toggle(j);
       delay(500);
    };
 
    val = pot.read();
-   Serial.println("Potentiometer Value = " + String(val));
+   //Serial.println("Potentiometer Value = " + String(val));
    delay(300);
 
    val /= 17;
-   Serial.println("Buzzer Buzzing at " + String(val) + " Hz");
-   buzzer.buzz(int(val), 500);
+   //Serial.println("Buzzer Buzzing at " + String(val) + " Hz");
+   //buzzer.buzz_on(int(val), 500);
+
+   val = button1.read(swS1);
+   if (val == 1)
+   {
+      Serial.println("Button 1 Pressed");
+      led.led_on(1);
+   }
+   else
+   {
+      led.led_off(1);
+   }
+}
+
 
    // for (int k = 1; k < 256; k++)
    // {
@@ -66,4 +83,4 @@ void loop()
    //    led.led_fade(1, l);
    //    delay(100);
    // }
-}
+// }
