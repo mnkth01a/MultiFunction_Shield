@@ -4,5 +4,12 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"\"*.ino\"": "\"Arduino\"",
+			"*.pde": "pde",
+			"*.cpp": "cpp",
+			"wiring_private.h": "c"
+		}
+	}
 }

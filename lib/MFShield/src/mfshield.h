@@ -15,9 +15,9 @@ const int ledD3 = 11; // LED D3 connected to digital pin 11
 const int ledD4 = 10; // LED D4 connected to digital pin 10
 
 /** Switches, Sensors and Potentiometer Variables **/
-const int swS1 = A1; // Switch A1 connected to analog pin A1
-const int swS2 = A2; // Switch A2 connected to analog pin A2
-const int swS3 = A3; // Switch A3 connected to analog pin A3
+const int swS1 = 15; // Switch A1 connected to analog pin A1
+const int swS2 = 16; // Switch A2 connected to analog pin A2
+const int swS3 = 17; // Switch A3 connected to analog pin A3
 
 const int LM35 = A4; // LM35/DS1820 temp sensor module connected to analog pin A4
 
@@ -40,6 +40,8 @@ const int Servo4 = A5; // Servo in A5
 /** IR Receive Socket Declaration **/
 const int IR_RECV_SOCKET = 2;
 
+// volatile bool glob_button_toggle;
+
 /************************************************************************/
 /*                                                                      */
 /*                      MFShield Class Declaration                      */
@@ -55,9 +57,7 @@ private:
    /************************************************************************/
    /** Constants **/
    int _LM35 = LM35;
-
    int _potA0 = potA0;
-
    int _IR_RECV_SOCKET = IR_RECV_SOCKET;
 
 public:
@@ -80,16 +80,22 @@ public:
 class Button
 {
 private:
-   int _swS1 = swS1;
-   int _swS2 = swS2;
-   int _swS3 = swS3;
+   volatile int _pin_addr;
+
+   // void button_ISR()
+   // {
+   //    toggle();
+   // };
 
 public:
-   Button();
+   Button(const int &);
    ~Button();
 
    // @param pin_addr: swS1, swS2, swS3
-   int read(int);
+   int read();
+   void watch();
+   void unwatch();
+   void toggle();
 }; // class Button
 
 /************************************************************************/

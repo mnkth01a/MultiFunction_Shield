@@ -31,28 +31,55 @@ void MFShield::whoIam(void)
 /*                       Button Class Definition                        */
 /*                                                                      */
 /************************************************************************/
-Button::Button()
+Button::Button(const int &pin_addr)
 {
    // Constructor
 
+   _pin_addr = pin_addr;
+
    /** Button style Switches **/
-   pinMode(_swS1, INPUT);
-   pinMode(_swS2, INPUT);
-   pinMode(_swS3, INPUT);
+   pinMode(_pin_addr, INPUT);
 };
 
-Button::~Button(){
-    // Destructor
-};
-
-int Button::read(int pin_addr) // pin_addr: swS1, swS2, swS3
+Button::~Button()
 {
-   int _state = 0;
-   int _sw = pin_addr;
+   // Destructor
+   detachInterrupt(digitalPinToInterrupt(_pin_addr));
+};
 
-   _state = digitalRead(_sw);  // _state is the state of the switch at pin_addr.
+int Button::read() // pin_addr: swS1, swS2, swS3
+{
+   // int _state = 0;
+   int _state = digitalRead(_pin_addr); // _state is the state of the switch at pin_addr.
 
-   return !_state;  // I had to invert the logic for the switches to work intuitively.
+   return !_state; // I had to invert the logic for the switches to work intuitively.
+};
+
+void Button::watch()
+{
+   /* // todo 
+   
+   lib/MFShield/src/mfshield.cpp:61:73: error: invalid use of non-static member function 'void Button::button_ISR()'
+
+   attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
+   ^In file included from lib / MFShield / src / mfshield.cpp : 2 : 0 : lib / MFShield / src / mfshield.h : 86 : 9 : note : declared here void button_ISR()
+
+   */
+
+   // start ISR to initialize the button interrupt
+   //attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
+};
+
+void Button::unwatch()
+{
+   // stop ISR to initialize the button interrupt
+   detachInterrupt(digitalPinToInterrupt(_pin_addr));
+};
+
+void Button::toggle(void)
+{
+   // toggle the button interrupt
+   //glob_button_toggle = !glob_button_toggle;
 };
 
 /************************************************************************/
