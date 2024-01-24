@@ -55,19 +55,11 @@ int Button::read() // pin_addr: swS1, swS2, swS3
    return !_state; // I had to invert the logic for the switches to work intuitively.
 };
 
-void Button::watch()
-{
-   /* // todo 
-   
-   lib/MFShield/src/mfshield.cpp:61:73: error: invalid use of non-static member function 'void Button::button_ISR()'
+void Button::watch(){
+    // todo attachInterrupt() will not work here. Uno uses pins 2 and 3 for interrupts, and the buttons are on pins A1, A2, and A3.  Need to develop a workaround.
 
-   attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
-   ^In file included from lib / MFShield / src / mfshield.cpp : 2 : 0 : lib / MFShield / src / mfshield.h : 86 : 9 : note : declared here void button_ISR()
-
-   */
-
-   // start ISR to initialize the button interrupt
-   //attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
+    // start ISR to initialize the button interrupt
+    // attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
 };
 
 void Button::unwatch()
@@ -76,10 +68,9 @@ void Button::unwatch()
    detachInterrupt(digitalPinToInterrupt(_pin_addr));
 };
 
-void Button::toggle(void)
+void Button::toggle(bool& _button_toggle)
 {
-   // toggle the button interrupt
-   //glob_button_toggle = !glob_button_toggle;
+   _button_toggle = !_button_toggle;
 };
 
 /************************************************************************/

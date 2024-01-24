@@ -16,9 +16,7 @@ Button button3(swS3);
 int i = 0;
 int val = 0;
 
-volatile bool glob_button_toggle = false;
-
-void button_ISR();
+bool glob_button_toggle = false;
 
 void setup()
 {
@@ -31,8 +29,7 @@ void setup()
    mfshield.whoIam();
 
    /** Buttons **/
-   //button2.watch();
-   attachInterrupt(digitalPinToInterrupt(2), button_ISR, FALLING);
+   // button2.watch();
 
    /** LEDs **/
    led.led_off(1);
@@ -76,19 +73,17 @@ void loop()
       led.led_off(1);
    };
 
-   if (glob_button_toggle == true)
+   val = button2.read();
+   if (val == 1)
    {
+      Serial.println();
+      Serial.println("Button 2 Pressed");
+      button2.toggle(glob_button_toggle);
+      Serial.println("Global button toggled = " + String(glob_button_toggle));
       Serial.println("Button 2 Toggled");
+      Serial.println();
    };
 }
-
-
-void button_ISR()
-{
-   // toggle the button interrupt
-   glob_button_toggle = !glob_button_toggle;
-};
-
 
 // for (int k = 1; k < 256; k++)
 // {

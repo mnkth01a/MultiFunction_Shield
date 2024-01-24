@@ -10,20 +10,5 @@ The first thing I've discovered is that the I/O logic has to be inverted in orde
 
 ### Issues
 
-lib/MFShield/src/mfshield.cpp: In member function 'void Button::watch()':
-lib/MFShield/src/mfshield.cpp:61:73: error: invalid use of non-static member function 'void Button::button_ISR()'
-    attachInterrupt(digitalPinToInterrupt(_pin_addr), button_ISR, FALLING);
-                                                                         ^
-In file included from lib/MFShield/src/mfshield.cpp:2:0:
-lib/MFShield/src/mfshield.h:86:9: note: declared here
-    void button_ISR()
-         ^~~~~~~~~~
-*** [.pio/build/uno/lib891/MFShield/mfshield.cpp.o] Error 1
-
-
-mfshield.cpp.o (symbol from plugin): In function `MFShield::MFShield()':
-(.text+0x0): multiple definition of `glob_button_toggle'
-.pio/build/uno/src/main.cpp.o (symbol from plugin):(.text+0x0): first defined here
-collect2: error: ld returned 1 exit status
-*** [.pio/build/uno/firmware.elf] Error 1
+The push buttons on the Multi-Function shield are on pins A1, A2, and A3.  The attached interrupt service routines use pins 2, and 3 on the Arduino Uno, so you can't use the push buttons with the interrupt service routines.
 

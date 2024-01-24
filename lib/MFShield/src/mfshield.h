@@ -82,11 +82,6 @@ class Button
 private:
    volatile int _pin_addr;
 
-   // void button_ISR()
-   // {
-   //    toggle();
-   // };
-
 public:
    Button(const int &);
    ~Button();
@@ -95,7 +90,7 @@ public:
    int read();
    void watch();
    void unwatch();
-   void toggle();
+   void toggle(bool &);
 }; // class Button
 
 /************************************************************************/
