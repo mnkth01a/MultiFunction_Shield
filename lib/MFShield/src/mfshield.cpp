@@ -219,7 +219,7 @@ void SSD::auto_count_up()
 
    if (i > 9999)
    {
-      i = 9999;
+      i = 0;
    };
 
    Dis_data[0] = i / 1000;
@@ -237,7 +237,7 @@ void SSD::auto_count_down()
 
    if (j <= 0)
    {
-      j = 0;
+      j = 9999;
    };
 
    Dis_data[0] = j / 1000;
