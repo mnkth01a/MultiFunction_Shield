@@ -68,7 +68,7 @@ void Button::unwatch()
    detachInterrupt(digitalPinToInterrupt(_pin_addr));
 };
 
-void Button::toggle(bool& _button_toggle)
+void Button::toggle(bool &_button_toggle)
 {
    _button_toggle = !_button_toggle;
 };
@@ -199,6 +199,10 @@ void LED::led_fade(int ledDx, int fade)
 /************************************************************************/
 SSD::SSD()
 {
+   i = 0;
+   j = 9999;
+   k = 0;
+
    pinMode(_latchPin, OUTPUT);
    pinMode(_clockPin, OUTPUT);
    pinMode(_dataPin, OUTPUT);
@@ -208,15 +212,50 @@ SSD::~SSD(){
     // Destructor
 };
 
-// digit (0-3) and number (0-9)
-void SSD::display()
+void SSD::auto_count_up()
+{
+   // Count up from 0 to 999
+   i++;
+
+   if (i > 9999)
+   {
+      i = 9999;
+   };
+
+   Dis_data[0] = i / 1000;
+   Dis_data[1] = i % (1000 / 10);
+   Dis_data[2] = i % (100 / 10);
+   Dis_data[3] = i % 10;
+   display_buffer();
+   delay(100);
+};
+
+void SSD::auto_count_down()
+{
+   // Count down from 999 to 0
+   j--;
+
+   if (j <= 0)
+   {
+      j = 0;
+   };
+
+   Dis_data[0] = j / 1000;
+   Dis_data[1] = j % (1000 / 10);
+   Dis_data[2] = j % (100 / 10);
+   Dis_data[3] = j % 10;
+   display_buffer();
+   delay(100);
+};
+
+void SSD::display_buffer()
 {
    // Send value to the four displays
-   for (i = 0; i < 4; i++)
+   for (k = 0; k <= 3; k++)
    {
       digitalWrite(_latchPin, LOW);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[Dis_data[i]]);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buffer[i]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[Dis_data[k]]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buffer[k]);
       digitalWrite(_latchPin, HIGH);
       delay(2);
    }

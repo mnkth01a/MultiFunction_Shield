@@ -129,7 +129,9 @@ private:
    int _clockPin = clockPin;
    int _dataPin = dataPin;
    int i, j, k, l;
+
    int SUM = 0;
+
    int Flag_up = 1;
    int Flag_up1 = 1;
 
@@ -144,11 +146,10 @@ public:
    SSD();
    ~SSD();
 
-   // digit (0-3) and number (0-9)
-   void display();
+   void auto_count_up();
+   void auto_count_down();
+   void display_buffer();
 }; // class SevenSegmentDisplay
-
-extern SSD ssd;
 
 /************************************************************************/
 /*                                                                      */
