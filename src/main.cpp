@@ -13,7 +13,6 @@ Button button1(swS1);
 Button button2(swS2);
 Button button3(swS3);
 
-int i = 0;
 int val = 0;
 
 bool glob_button_toggle = false;

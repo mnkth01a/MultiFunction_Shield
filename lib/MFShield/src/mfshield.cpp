@@ -203,6 +203,10 @@ SSD::SSD()
    j = 9999;
    k = 0;
 
+   _dataPin = dataPin;
+   _clockPin = clockPin;
+   _latchPin = latchPin;
+
    pinMode(_latchPin, OUTPUT);
    pinMode(_clockPin, OUTPUT);
    pinMode(_dataPin, OUTPUT);
@@ -224,7 +228,7 @@ void SSD::auto_count_up()
 
    Dis_data[0] = i / 1000;
    Dis_data[1] = i % (1000 / 10);
-   Dis_data[2] = i % (100 / 10);
+   Dis_data[2] = i % (1000 / 100);
    Dis_data[3] = i % 10;
    display_buffer();
    delay(100);
@@ -242,7 +246,7 @@ void SSD::auto_count_down()
 
    Dis_data[0] = j / 1000;
    Dis_data[1] = j % (1000 / 10);
-   Dis_data[2] = j % (100 / 10);
+   Dis_data[2] = j % (1000 / 100);
    Dis_data[3] = j % 10;
    display_buffer();
    delay(100);

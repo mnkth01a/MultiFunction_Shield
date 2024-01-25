@@ -125,15 +125,15 @@ public:
 class SSD
 {
 private:
-   int _latchPin = latchPin;
-   int _clockPin = clockPin;
-   int _dataPin = dataPin;
+   int _latchPin;
+   int _clockPin;
+   int _dataPin;
    int i, j, k, l;
 
-   int SUM = 0;
+   int SUM;
 
-   int Flag_up = 1;
-   int Flag_up1 = 1;
+   int Flag_up;
+   int Flag_up1;
 
    unsigned char Dis_table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
                                   0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
