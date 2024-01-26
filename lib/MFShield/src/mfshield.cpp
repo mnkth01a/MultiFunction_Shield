@@ -221,17 +221,19 @@ void SSD::auto_count_up()
    // Count up from 0 to 999
    i++;
 
-   if (i > 9999)
+   if (i > 9)
    {
       i = 0;
    };
 
-   Dis_data[0] = i / 1000;
-   Dis_data[1] = i % (1000 / 10);
-   Dis_data[2] = i % (1000 / 100);
-   Dis_data[3] = i % 10;
-   display_buffer();
+   display(Segment_Select[0], Dis_Table[i]);
+   // display(Segment_Select[1], Dis_Table[i]);
+   // display(Segment_Select[2], Dis_Table[i]);
+   // display(Segment_Select[3], Dis_Table[i]);
    delay(100);
+
+   Serial.println("i = " + String(i));
+   Serial.println();
 };
 
 void SSD::auto_count_down()
@@ -245,11 +247,24 @@ void SSD::auto_count_down()
    };
 
    Dis_data[0] = j / 1000;
-   Dis_data[1] = j % (1000 / 10);
-   Dis_data[2] = j % (1000 / 100);
+   Dis_data[1] = j % 1000;
+   Dis_data[2] = j % 100;
    Dis_data[3] = j % 10;
    display_buffer();
    delay(100);
+};
+
+void SSD::display(char Segment_no, char hexvalue)
+{
+   // Send value to the four displays
+   for (k = 0; k <= 3; k++)
+   {
+      digitalWrite(_latchPin, LOW);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, hexvalue);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Segment_no);
+      digitalWrite(_latchPin, HIGH);
+      delay(2);
+   }
 };
 
 void SSD::display_buffer()
@@ -258,8 +273,8 @@ void SSD::display_buffer()
    for (k = 0; k <= 3; k++)
    {
       digitalWrite(_latchPin, LOW);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_table[Dis_data[k]]);
-      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_buffer[k]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Dis_Table[Dis_data[k]]);
+      shiftOut(_dataPin, _clockPin, MSBFIRST, Segment_Select[k]);
       digitalWrite(_latchPin, HIGH);
       delay(2);
    }
