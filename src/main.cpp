@@ -14,6 +14,8 @@ Button button2(swS2);
 Button button3(swS3);
 
 int val = 0;
+int seg = 0;
+int dis = 0;
 
 bool glob_button_toggle = false;
 
@@ -63,7 +65,21 @@ void loop()
    };
    /****************************************************************/
    /****************************************************************/
-   ssd.auto_count_up();
+   ssd.Dis_data[0] = 1;
+   ssd.Dis_data[1] = 4;
+   ssd.Dis_data[2] = 6;
+   ssd.Dis_data[3] = 1;
+
+   if (seg > 3)
+   {
+      seg = 0;
+   };
+
+   ssd.display(ssd.Segment_Select[seg], ssd.Dis_Table[ssd.Dis_data[seg]]);
+   delay(250);
+
+   seg++;
+   // ssd.auto_count_up();
    /****************************************************************/
    /****************************************************************/
    val = pot.read();

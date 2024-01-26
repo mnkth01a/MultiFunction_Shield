@@ -221,19 +221,15 @@ void SSD::auto_count_up()
    // Count up from 0 to 999
    i++;
 
-   if (i > 9)
+   if (i > 3)
    {
       i = 0;
    };
 
-   display(Segment_Select[0], Dis_Table[i]);
-   // display(Segment_Select[1], Dis_Table[i]);
-   // display(Segment_Select[2], Dis_Table[i]);
-   // display(Segment_Select[3], Dis_Table[i]);
+   display(Segment_Select[i], SEG_ON);
    delay(100);
 
    Serial.println("i = " + String(i));
-   Serial.println();
 };
 
 void SSD::auto_count_down()

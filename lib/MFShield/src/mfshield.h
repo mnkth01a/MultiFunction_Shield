@@ -133,18 +133,18 @@ private:
    int Flag_up;
    int Flag_up1;
 
-   const unsigned char Dis_Table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
-                                        0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
-
-   const unsigned char Segment_Select[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
-
-   unsigned char Dis_data[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
-
    const unsigned char SEG_OFF = 0xff; // this is the value to turn off all segments
 
    const unsigned char SEG_ON = 0x00; // this is the value to turn on all segments
 
 public:
+   const unsigned char Dis_Table[10] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99,
+                                        0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
+
+   const unsigned char Segment_Select[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
+   
+   unsigned char Dis_data[4] = {0, 0, 0, 0};                         // this is the buffer that holds the data to be sent to the display
+
    SSD();
    ~SSD();
 
