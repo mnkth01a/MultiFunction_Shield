@@ -332,18 +332,63 @@ void Buzzer::buzz_on(int frequency, int duration)
 /*                   Servo Class Definition                             */
 /*                                                                      */
 /************************************************************************/
-Servo::Servo(int pin)
+Servo::Servo(int &pin)
 {
-   _servoPin = pin;
-   pinMode(_servoPin, OUTPUT);
+   checkType();
+   if (goodPin(pin))
+   {
+      _servoPin = pin;
+      pinMode(_servoPin, OUTPUT);
+   }
+   else
+   {
+      exit(1);
+   }
 };
 
 Servo::~Servo(){
     // Destructor
 };
 
-void Servo::write(int angle)
+bool Servo::goodPin(int &_servoPin)
 {
-   _angle = angle;
-   analogWrite(_servoPin, _angle);
+   if (_servoPin != Servo1Pin5 &&
+       _servoPin != Servo2Pin6 &&
+       _servoPin != Servo3Pin9 &&
+       _servoPin != Servo4PinA5)
+   {
+      Serial.println("Invalid Pin");
+      Serial.println("Please use one of the following pins: 5, 6, 9, 19 or A5");
+      Serial.println("Exiting...");
+
+      return false;
+   }
+   else
+   {
+      Serial.println();
+      Serial.println("Valid Pin");
+      return true;
+   }
+};
+
+void Servo::checkType()
+{
+   if (__AVR_ARCH__ != 2)
+   {
+      Serial.println("This library only supports AVR architecture.");
+      Serial.println("Exiting...");
+      exit(2);
+   }
+};
+
+int Servo::setAO(int &_angle)
+{
+   int _val = map(_angle, 0, 180, 0, 255);
+   return _val;
+};
+
+void Servo::write(int &_angle)
+{
+   int _val = setAO(_angle);
+   analogWrite(_servoPin, _val);
 };

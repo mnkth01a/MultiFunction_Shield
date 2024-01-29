@@ -32,10 +32,10 @@ const int potA0 = A0; // Potentiometer connected to analog pin A0
 const int buzzerPin = 3; // Buzzer connected to digital pin 3
 
 /* Servos pins (PWM's) **/
-const int Servo1 = 5;  // Servo in 5
-const int Servo2 = 6;  // Servo in 6
-const int Servo3 = 9;  // Servo in 9
-const int Servo4 = A5; // Servo in A5
+const int Servo1Pin5 = 5;   // Servo on pin 5
+const int Servo2Pin6 = 6;   // Servo on pin 6
+const int Servo3Pin9 = 9;   // Servo on pin 9
+const int Servo4PinA5 = A5; // Servo on pin A5 = int(19)
 
 /** IR Receive Socket Declaration **/
 const int IR_RECV_SOCKET = 2;
@@ -142,8 +142,8 @@ public:
                                         0x92, 0x82, 0xf8, 0x80, 0x90}; // This table defines the 7 segments of the display, 0x is not used here.  00 = all segments ON, FF = all segments OFF, 0x7f is used for the decimal point.
 
    const unsigned char Segment_Select[4] = {0xf1, 0xf2, 0xf4, 0xf8}; // this table sets a selector for what digit to display.  0xf1 = digit 1, 0xf2 = digit 2, etc.
-   
-   unsigned char Dis_data[4] = {0, 0, 0, 0};                         // this is the buffer that holds the data to be sent to the display
+
+   unsigned char Dis_data[4] = {0, 0, 0, 0}; // this is the buffer that holds the data to be sent to the display
 
    SSD();
    ~SSD();
@@ -205,11 +205,15 @@ private:
    int _servoPin;
    int _angle;
 
+   bool goodPin(int &);
+   void checkType();
+   int setAO(int &);
+
 public:
-   Servo(int);
+   Servo(int &);
    ~Servo();
 
-   void write(int);
+   void write(int &);
 }; // class Servo
 
 /************************************************************************/
