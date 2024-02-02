@@ -16,4 +16,4 @@ The 4 digit seven segment display does not function correctly.  It does not reta
 
 Also, the b segment comes on anytime the segment is active and a segment is active.  So, if you want to display a "5", the b segment is also active making it look like an "9".  The same is true for the "6" which looks like an "8".  I even spent some time trying to figure out how to turn off the b segment, but I was not successful.
 
-The potentiometer is of the multiturn type that is great for fine tuning, but is not very good for sweeping the value.  
+The potentiometer is of the multiturn type that is great for fine tuning, but is not very good for sweeping the value.  In order to use it for positioning a servo, you would have to turn the potentiometer many times to get the servo to move from one end to the other.  An alternative would be to use a very narrow range of the potentiometer, but that would not be very accurate.  I would recommend using a regular potentiometer instead, but you'd have to find one to replace the multiturn potentiometer on the board.

@@ -210,6 +210,13 @@ SSD::SSD()
    pinMode(_latchPin, OUTPUT);
    pinMode(_clockPin, OUTPUT);
    pinMode(_dataPin, OUTPUT);
+
+   if (__AVR_ARCH__ != 2)
+   {
+      Serial.println("This library only supports AVR architecture.");
+      Serial.println("Exiting...");
+      exit(2);
+   };
 };
 
 SSD::~SSD(){
@@ -334,7 +341,6 @@ void Buzzer::buzz_on(int frequency, int duration)
 /************************************************************************/
 Servo::Servo(int &pin)
 {
-   checkType();
    if (goodPin(pin))
    {
       _servoPin = pin;
@@ -368,16 +374,6 @@ bool Servo::goodPin(int &_servoPin)
       Serial.println();
       Serial.println("Valid Pin");
       return true;
-   }
-};
-
-void Servo::checkType()
-{
-   if (__AVR_ARCH__ != 2)
-   {
-      Serial.println("This library only supports AVR architecture.");
-      Serial.println("Exiting...");
-      exit(2);
    }
 };
 

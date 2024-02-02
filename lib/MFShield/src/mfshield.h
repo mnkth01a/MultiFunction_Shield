@@ -206,7 +206,6 @@ private:
    int _angle;
 
    bool goodPin(int &);
-   void checkType();
    int setAO(int &);
 
 public:
