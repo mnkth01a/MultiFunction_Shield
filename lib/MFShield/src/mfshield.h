@@ -202,17 +202,17 @@ public:
 class Servo
 {
 private:
-   int _servoPin;
+   int _pin;
    int _angle;
+   int _val;
 
-   bool goodPin(int &);
-   int setAO(int &);
+   int setAO(int);
 
 public:
-   Servo(int &);
+   Servo(int);
    ~Servo();
 
-   void write(int &);
+   void write(int);
 }; // class Servo
 
 /************************************************************************/

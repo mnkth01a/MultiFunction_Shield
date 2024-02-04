@@ -13,7 +13,7 @@ Button button1(swS1);
 Button button2(swS2);
 Button button3(swS3);
 
-int val = 0;
+int value = 0;
 int seg = 0;
 int dis = 0;
 
@@ -82,20 +82,20 @@ void loop()
    // ssd.auto_count_up();
    /****************************************************************/
    /****************************************************************/
-   val = pot.read();
-   // Serial.println("Potentiometer Value = " + String(val));
+   value = pot.read();
+   // Serial.println("Potentiometer Value = " + String(value));
    delay(300);
 
-   val /= 17;
-   // Serial.println("Buzzer Buzzing at " + String(val) + " Hz");
-   // buzzer.buzz_on(int(val), 500);
+   value /= 17;
+   // Serial.println("Buzzer Buzzing at " + String(value) + " Hz");
+   // buzzer.buzz_on(int(value), 500);
    /****************************************************************/
    /****************************************************************/
    // ssd.auto_count_down();
    /****************************************************************/
    /****************************************************************/
-   val = button1.read();
-   if (val == 1)
+   value = button1.read();
+   if (value == 1)
    {
       Serial.println("Button 1 Pressed");
       led.led_on(1);
@@ -105,8 +105,8 @@ void loop()
       led.led_off(1);
    };
 
-   val = button2.read();
-   if (val == 1)
+   value = button2.read();
+   if (value == 1)
    {
       Serial.println();
       Serial.println("Button 2 Pressed");
@@ -119,17 +119,4 @@ void loop()
    /****************************************************************/
 }
 
-// for (int k = 1; k < 256; k++)
-// {
-//    Serial.println("Fade = " + String(k));
-//    led.led_fade(1, k);
-//    delay(100);
-// }
-
-// for (int l = 255; l > 0; l--)
-// {
-//    Serial.println("Fade = " + String(l));
-//    led.led_fade(1, l);
-//    delay(100);
-// }
-// }
+// End of File

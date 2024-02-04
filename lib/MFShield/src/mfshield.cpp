@@ -339,12 +339,15 @@ void Buzzer::buzz_on(int frequency, int duration)
 /*                   Servo Class Definition                             */
 /*                                                                      */
 /************************************************************************/
-Servo::Servo(int &pin)
+Servo::Servo(int pin)
 {
-   if (goodPin(pin))
+   if (pin != Servo1Pin5 &&
+       pin != Servo2Pin6 &&
+       pin != Servo3Pin9 &&
+       pin != Servo4PinA5)
    {
-      _servoPin = pin;
-      pinMode(_servoPin, OUTPUT);
+      _pin = pin;
+      pinMode(_pin, OUTPUT);
    }
    else
    {
@@ -356,35 +359,14 @@ Servo::~Servo(){
     // Destructor
 };
 
-bool Servo::goodPin(int &_servoPin)
+int Servo::setAO(int angle)
 {
-   if (_servoPin != Servo1Pin5 &&
-       _servoPin != Servo2Pin6 &&
-       _servoPin != Servo3Pin9 &&
-       _servoPin != Servo4PinA5)
-   {
-      Serial.println("Invalid Pin");
-      Serial.println("Please use one of the following pins: 5, 6, 9, 19 or A5");
-      Serial.println("Exiting...");
-
-      return false;
-   }
-   else
-   {
-      Serial.println();
-      Serial.println("Valid Pin");
-      return true;
-   }
+   int _setval = map(angle, 0, 180, 0, 255);
+   return _setval;
 };
 
-int Servo::setAO(int &_angle)
+void Servo::write(int angle)
 {
-   int _val = map(_angle, 0, 180, 0, 255);
-   return _val;
-};
-
-void Servo::write(int &_angle)
-{
-   int _val = setAO(_angle);
-   analogWrite(_servoPin, _val);
+   _val = setAO(angle);
+   analogWrite(_pin, _val);
 };
