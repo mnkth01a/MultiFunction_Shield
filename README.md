@@ -1,6 +1,6 @@
 # Building a libary for the Arduino Multi-Function Shield
 
-Like the Velleman VMA209, or the Arduino Multi-Function shields.
+Like the Velleman VMA209, or the Arduino-compatible Multi-Function shields.
 
 ## Getting Started
 
